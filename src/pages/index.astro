@@ -1,0 +1,36 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageMeta from '@components/PageMeta.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+const notes = await getCollection('notes');
+const sortedNotes = notes.sort(
+  (a: CollectionEntry<'notes'>, b: CollectionEntry<'notes'>) =>
+    b.data.date.getTime() - a.data.date.getTime()
+);
+
+const metadata = {
+  title: 'Livenotes',
+  description: 'Notes and reference material',
+};
+---
+
+<Layout>
+  <PageMeta slot="metadata" metadata={metadata} />
+  <div class="mx-auto max-w-2xl px-4 py-12">
+    <nav class="space-y-2">
+      {
+        sortedNotes.map((note) => {
+          return (
+            <a
+              href={`/notes/${note.slug}`}
+              class="block text-lg hover:underline"
+            >
+              {note.data.title}
+            </a>
+          );
+        })
+      }
+    </nav>
+  </div>
+</Layout>

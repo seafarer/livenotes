@@ -1,0 +1,41 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageMeta from '@components/PageMeta.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('notes');
+  return notes.map((note) => ({
+    params: { slug: note.slug },
+    props: { note },
+  }));
+}
+
+const { note } = Astro.props;
+const { Content } = await note.render();
+
+const metadata = {
+  title: note.data.title,
+  description: note.data.description || note.data.title,
+};
+---
+
+<Layout>
+  <PageMeta slot="metadata" metadata={metadata} />
+  <article class="max-w-3xl mx-auto px-4 py-12">
+    <h1 class="text-4xl font-bold mb-4">{note.data.title}</h1>
+    {note.data.date ? (
+      <time class="text-sm text-gray-600 mb-8 block">
+        {note.data.date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })}
+      </time>
+    ) : null}
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</Layout>
+
