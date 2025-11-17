@@ -1,3 +1,5 @@
+# Personal Notes app
+
 # Astro Starter Kit: Minimal
 
 ```sh
