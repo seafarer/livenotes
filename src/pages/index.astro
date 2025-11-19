@@ -23,7 +23,7 @@ const metadata = {
         sortedNotes.map((note) => {
           return (
             <a
-              href={`${import.meta.env.BASE_URL}notes/${note.slug}`}
+              href={`${import.meta.env.BASE_URL}/notes/${note.slug}`}
               class="block text-lg hover:underline"
             >
               {note.data.title}
